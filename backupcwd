@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ "${#}" -gt 1 ]; then
+    echo 'Too many arguments.'
+    exit -1
+fi
+
+if [ "${#}" -eq 1 ]; then
+    if [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
+        echo 'Backups current working directory into parent directory as an archive.'
+        echo 'Expects no arguments except -h or --help.'
+        exit 0
+    else
+        echo 'Illegal argument.'
+        exit -1
+    fi
+fi
+
+name=$(basename "$(pwd)")
+time=$(date '+%Y%m%d%H%M%S')
+extension='bkp.7z'
+
+dst="../${name}.${time}.${extension}"
+src="$(pwd)"
+
+set -x
+7z a "${dst}" "${src}"
+
+exit 0
